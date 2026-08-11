@@ -2,11 +2,8 @@ packages:
   - apps/*
   - packages/*
 
-onlyBuiltDependencies:
-  - esbuild
-  - sharp
-  - workerd
+# These packages require native postinstall steps for Astro and Workers builds.
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
-  workerd: set this to true or false
+  esbuild: true
+  sharp: true
+  workerd: true

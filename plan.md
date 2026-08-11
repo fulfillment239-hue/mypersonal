@@ -15,10 +15,11 @@
 - [x] Deployed the internal API Worker and the public web Worker with a service binding between them.
 - [x] Added Turnstile registration verification, production secrets and hardened response headers.
 - [x] Bound `462019.xyz` and `www.462019.xyz`, including the canonical HTTPS redirect.
+- [x] Configured Cloudflare Access for both administrator routes and synchronized the first D1 administrator.
 
 ## In progress
 
-- [ ] Configure Cloudflare Access and synchronize the first administrator account.
+- [ ] Complete the first interactive Access OTP and administrator-password smoke test.
 
 ## Deployment checklist
 
@@ -27,8 +28,8 @@
 - [x] Create the production D1 database and bind its real database ID.
 - [x] Enable R2, create the production bucket and upload JSON seed content.
 - [x] Set `AUTH_PEPPER` and `TURNSTILE_SECRET` Worker secrets.
-- [ ] Set `ACCESS_AUD` and `ACCESS_TEAM_DOMAIN` after Cloudflare Access is configured.
+- [x] Set `ACCESS_AUD` and `ACCESS_TEAM_DOMAIN` after Cloudflare Access was configured.
 - [x] Apply the production D1 identity migration.
-- [ ] Synchronize the ignored local administrator configuration.
+- [x] Synchronize the ignored local administrator configuration and clear the plaintext password.
 - [x] Bind `462019.xyz` after reviewing existing DNS records.
-- [ ] Configure Access policies for `/admin*` and `/api/admin/*`.
+- [x] Configure Access policies for `/admin*` and `/api/admin/*` with a six-hour Access session.

@@ -170,7 +170,14 @@ async function requireAdmin(context: AppContext, needsCsrf = false): Promise<Ses
   const access = await verifyAccess(context.req.header("Cf-Access-Jwt-Assertion"), context.env);
   if (!access) return null;
   const binding = await context.env.DB.prepare("SELECT access_email, access_subject FROM admin_access_bindings WHERE user_id = ?").bind(session.id).first<{ access_email: string; access_subject: string | null }>();
-  return binding?.access_email === access.email && (!binding.access_subject || binding.access_subject === access.subject) ? session : null;
+  if (!binding || binding.access_email !== access.email) return null;
+  if (binding.access_subject) return binding.access_subject === access.subject ? session : null;
+
+  // Pin the immutable Access subject on first use so later requests cannot rely on email alone.
+  const pinned = await context.env.DB.prepare("UPDATE admin_access_bindings SET access_subject = ? WHERE user_id = ? AND access_subject IS NULL RETURNING access_subject").bind(access.subject, session.id).first<{ access_subject: string }>();
+  if (pinned?.access_subject === access.subject) return session;
+  const current = await context.env.DB.prepare("SELECT access_subject FROM admin_access_bindings WHERE user_id = ?").bind(session.id).first<{ access_subject: string | null }>();
+  return current?.access_subject === access.subject ? session : null;
 }
 
 async function verifyTurnstile(token: string, env: Bindings): Promise<boolean> {

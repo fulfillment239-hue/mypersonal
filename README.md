@@ -46,3 +46,4 @@ Web Worker (`mypersonal1`):
 Deploy the API Worker once before enabling the web build. The root `pnpm deploy` command remains available for an authenticated local or release-machine deployment in the required API-to-web order. All deploy scripts use the pinned Wrangler release and explicit config paths.
 
 The local administrator file is ignored by Git. Never commit passwords or Worker secrets.
+The synchronizer accepts `AUTH_PEPPER` from the process environment and clears `ADMIN_PASSWORD` from the local file only after D1 reports success.

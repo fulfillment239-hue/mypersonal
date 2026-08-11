@@ -1,6 +1,6 @@
 # 462019 Portfolio
 
-An English-first, bilingual personal portfolio built as a Cloudflare-native monorepo.
+An English-first, bilingual personal portfolio built as a Cloudflare-native monorepo. The workspace requires Node.js 22 or newer, pnpm 11.16.0 and the pinned Wrangler 4.120.1 release.
 
 ## Local setup
 
@@ -8,15 +8,41 @@ An English-first, bilingual personal portfolio built as a Cloudflare-native mono
 2. Copy `config/admin.example.env` to `config/admin.local.env` and set private values.
 3. Apply `apps/api/migrations/0001_identity.sql` through Wrangler locally, then run `pnpm dev`.
 
-## Cloudflare release
+## Cloudflare architecture
 
-1. Create a D1 database named `462019-portfolio` and an R2 bucket named `462019-portfolio-content`.
-2. Replace `REPLACE_WITH_D1_DATABASE_ID` in `apps/api/wrangler.jsonc`.
-3. Set `AUTH_PEPPER` with `wrangler secret put AUTH_PEPPER` in the API workspace. Add Turnstile and Access secrets before enabling production registration or `/admin`.
-4. Run `pnpm admin:sync --remote` after creating the local ignored administrator config.
-5. Deploy the API Worker first, then build and deploy the web Worker. Bind `462019.xyz` only after reviewing existing DNS records.
-6. In Cloudflare Access, protect `/admin*` and `/api/admin/*`; production admin requests require both Access and the D1 administrator session.
+The release contains two Workers:
 
-The browser-facing API stays same-origin at `/api/*`; the web Worker forwards it to the private API service binding.
+- `462019-content-api` owns D1 authentication data and R2 JSON/media access. It has no public `workers.dev` or preview URL.
+- `462019-portfolio-web` serves the Astro build and forwards same-origin `/api/*` requests through the `API` service binding to `462019-content-api`.
+
+The service binding requires the API Worker to exist before the web Worker is deployed. The root `pnpm deploy` script therefore always deploys API first and web second.
+
+## Cloudflare prerequisites
+
+Before the first production deployment:
+
+1. Add `462019.xyz` to the target Cloudflare account and review existing DNS records before creating the Custom Domain.
+2. The production D1 database `462019-portfolio` is already bound in `apps/api/wrangler.jsonc`. Recreate it and update the ID only when moving to another Cloudflare account.
+3. Create an R2 bucket named `462019-portfolio-content`.
+4. The initial D1 migration is already applied. Set `AUTH_PEPPER`, `TURNSTILE_SECRET`, `ACCESS_AUD` and `ACCESS_TEAM_DOMAIN` as API Worker secrets before enabling account features.
+5. Create the ignored local administrator config and run `pnpm admin:sync --remote`.
+6. Configure Cloudflare Access policies for `/admin*` and `/api/admin/*`; production administrator requests require both Access and the D1 administrator session.
+7. Attach `462019.xyz` as the web Worker's Custom Domain after the Workers are deployed. Both Workers disable `workers.dev` and preview URLs by design.
+
+## Cloudflare Builds settings
+
+Create two build configurations from the same repository. Keep both root directories at `/` so pnpm can resolve workspace packages.
+
+API Worker (`462019-content-api`):
+
+- **Build command:** `pnpm --filter @462019/api build`
+- **Deploy command:** `pnpm deploy:api`
+
+Web Worker (`462019-portfolio-web`):
+
+- **Build command:** `pnpm --filter @462019/web build`
+- **Deploy command:** `pnpm deploy:web`
+
+Deploy the API Worker once before enabling the web build. The root `pnpm deploy` command remains available for an authenticated local or release-machine deployment in the required API-to-web order. All deploy scripts use the pinned Wrangler release and explicit config paths.
 
 The local administrator file is ignored by Git. Never commit passwords or Worker secrets.

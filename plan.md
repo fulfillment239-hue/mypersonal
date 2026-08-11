@@ -8,6 +8,9 @@
 - [x] Implemented the Astro public site, category and project routes, account entry and administration shell.
 - [x] Implemented D1 migrations, password/session primitives, Access verification and R2 JSON revisions.
 - [x] Completed local type checks, unit tests, static build, Worker dry run and desktop/mobile visual checks.
+- [x] Pinned Node.js 22+ and Wrangler 4.120.1 at the monorepo root.
+- [x] Added explicit API-first/web-second deployment scripts for Cloudflare Builds.
+- [x] Disabled production `workers.dev` and preview URLs and set the API production origin/environment.
 
 ## In progress
 
@@ -17,7 +20,12 @@
 
 ## Deployment checklist
 
-- [ ] Create D1 database and R2 bucket.
+- [x] Configure separate repository-root Cloudflare Builds commands for the API and web Workers.
+- [x] Keep the web `API` service binding pointed at `462019-content-api`.
+- [x] Create the production D1 database and bind its real database ID.
+- [ ] Enable R2 for the account and create the production bucket.
 - [ ] Set `AUTH_PEPPER`, `TURNSTILE_SECRET`, `ACCESS_AUD` and `ACCESS_TEAM_DOMAIN`.
+- [x] Apply the production D1 identity migration.
+- [ ] Synchronize the ignored local administrator configuration.
 - [ ] Bind `462019.xyz` after reviewing existing DNS records.
 - [ ] Configure Access policies for `/admin*` and `/api/admin/*`.

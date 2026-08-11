@@ -13,7 +13,7 @@ An English-first, bilingual personal portfolio built as a Cloudflare-native mono
 The release contains two Workers:
 
 - `462019-content-api` owns D1 authentication data and R2 JSON/media access. It has no public `workers.dev` or preview URL.
-- `462019-portfolio-web` serves the Astro build and forwards same-origin `/api/*` requests through the `API` service binding to `462019-content-api`.
+- `mypersonal1` serves the Astro build and forwards same-origin `/api/*` requests through the `API` service binding to `462019-content-api`.
 
 The service binding requires the API Worker to exist before the web Worker is deployed. The root `pnpm deploy` script therefore always deploys API first and web second.
 
@@ -38,7 +38,7 @@ API Worker (`462019-content-api`):
 - **Build command:** `pnpm --filter @462019/api build`
 - **Deploy command:** `pnpm deploy:api`
 
-Web Worker (`462019-portfolio-web`):
+Web Worker (`mypersonal1`):
 
 - **Build command:** `pnpm --filter @462019/web build`
 - **Deploy command:** `pnpm deploy:web`

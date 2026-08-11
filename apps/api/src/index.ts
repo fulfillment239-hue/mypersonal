@@ -180,8 +180,8 @@ async function verifyTurnstile(token: string, env: Bindings): Promise<boolean> {
   body.set("secret", env.TURNSTILE_SECRET);
   body.set("response", token);
   const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
-  const result = await response.json<{ success: boolean; hostname?: string }>();
-  return result.success && result.hostname === new URL(env.APP_ORIGIN).hostname;
+  const result = await response.json<{ success: boolean; hostname?: string; action?: string }>();
+  return result.success && result.hostname === new URL(env.APP_ORIGIN).hostname && result.action === "register";
 }
 
 function contentKind(value: string): ContentKind | null {

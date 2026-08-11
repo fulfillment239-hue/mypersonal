@@ -1,0 +1,10 @@
+---
+/** English root welcome page. The generated entry is the requested index page. */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HomePage from "../components/HomePage.astro";
+import { seededCategories, seededProjects, seededSite } from "@462019/content";
+---
+<BaseLayout locale="en" title={`${seededSite.brand} — ${seededSite.heroTitle.en}`} description={seededSite.heroDescription.en}>
+  <HomePage locale="en" site={seededSite} categories={seededCategories} projects={seededProjects} />
+</BaseLayout>
+

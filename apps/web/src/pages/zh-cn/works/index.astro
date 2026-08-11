@@ -1,0 +1,8 @@
+---
+/** Simplified Chinese all-project archive. */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ArchivePage from "../../../components/ArchivePage.astro";
+import { seededCategories, seededProjects } from "@462019/content";
+---
+<BaseLayout locale="zh-CN" title="作品 — 462019" description="462019 作品档案。"><ArchivePage locale="zh-CN" categories={seededCategories} projects={seededProjects} /></BaseLayout>
+

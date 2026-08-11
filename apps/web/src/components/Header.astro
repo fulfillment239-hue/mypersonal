@@ -1,0 +1,21 @@
+---
+/** Fixed navigation keeps public work, language and account actions reachable. */
+import type { Locale } from "@462019/contracts";
+import { localePath } from "../lib";
+import AuthDialog from "./AuthDialog";
+
+const { locale } = Astro.props as { locale: Locale };
+const labels = locale === "en" ? { works: "Works", about: "Statement", account: "Sign in" } : { works: "作品", about: "陈述", account: "登录" };
+const targetLocale = locale === "en" ? "zh-CN" : "en";
+---
+<header class="header">
+  <div class="shell header__row">
+    <a class="brand" href={localePath(locale)} aria-label="462019 home">462019</a>
+    <nav class="nav" aria-label={locale === "en" ? "Primary navigation" : "主导航"}>
+      <a href={localePath(locale, "works")}>{labels.works}</a>
+      <a href={localePath(locale, "#statement")}>{labels.about}</a>
+      <a class="nav__locale" href={localePath(targetLocale)} lang={targetLocale}>{locale === "en" ? "简中" : "EN"}</a>
+      <AuthDialog client:load label={labels.account} locale={locale} />
+    </nav>
+  </div>
+</header>

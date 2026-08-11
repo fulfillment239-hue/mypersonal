@@ -1,0 +1,18 @@
+{
+  "name": "462019-portfolio",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.16.0",
+  "scripts": {
+    "dev": "pnpm --filter @462019/api --filter @462019/web --parallel --stream dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "admin:sync": "pnpm --filter @462019/api admin:sync"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "sharp": "^0.34.2"
+  }
+}

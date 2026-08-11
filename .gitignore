@@ -1,0 +1,11 @@
+# Local credentials and generated output must never be committed.
+node_modules/
+dist/
+.astro/
+.wrangler/
+.dev.vars
+config/admin.local.env
+coverage/
+playwright-report/
+test-results/
+

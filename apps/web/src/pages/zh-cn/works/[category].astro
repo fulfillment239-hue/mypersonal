@@ -1,0 +1,12 @@
+---
+/** Simplified Chinese category archive generated from active JSON categories. */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ArchivePage from "../../../components/ArchivePage.astro";
+import { seededCategories, seededProjects } from "@462019/content";
+export function getStaticPaths() { return seededCategories.filter((category) => category.active).map((category) => ({ params: { category: category.slug } })); }
+const slug = Astro.params.category;
+const category = seededCategories.find((item) => item.slug === slug);
+if (!category) return Astro.redirect("/zh-cn/works");
+---
+<BaseLayout locale="zh-CN" title={`${category.label["zh-CN"]} — 462019`} description={category.description["zh-CN"]}><ArchivePage locale="zh-CN" categories={seededCategories} projects={seededProjects} activeSlug={slug} /></BaseLayout>
+

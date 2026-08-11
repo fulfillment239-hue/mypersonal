@@ -1,0 +1,7 @@
+---
+/** Account route is public; unauthenticated visitors stay in guest mode. */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AccountPanel from "../../components/AccountPanel";
+---
+<BaseLayout locale="en" title="Account — 462019" description="Manage your 462019 account."><section class="account shell"><div class="eyebrow">Account</div><h1>Your seat at the table.</h1><AccountPanel client:load /></section></BaseLayout>
+

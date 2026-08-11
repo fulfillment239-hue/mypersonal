@@ -1,0 +1,7 @@
+[
+  { "id": "5d9b2cb5-f5c5-4413-a884-1eaa429c80d5", "slug": "art", "label": { "en": "Art", "zh-CN": "艺术" }, "description": { "en": "Images, studies and visual worlds.", "zh-CN": "图像、习作与视觉世界。" }, "order": 1, "active": true },
+  { "id": "dfaeebae-f2df-4218-902a-2472e9fb4970", "slug": "ui-design", "label": { "en": "UI Design", "zh-CN": "界面设计" }, "description": { "en": "Interfaces with a point of view.", "zh-CN": "带有观点的界面。" }, "order": 2, "active": true },
+  { "id": "0aee85c7-8332-47c2-ab5f-0a0197d2092b", "slug": "apps", "label": { "en": "Apps", "zh-CN": "应用" }, "description": { "en": "Useful tools shaped into products.", "zh-CN": "被塑造成产品的实用工具。" }, "order": 3, "active": true },
+  { "id": "7fe8c244-14ea-46d7-b6ca-29672c4d2615", "slug": "web", "label": { "en": "Web", "zh-CN": "网站" }, "description": { "en": "Spaces built for the browser.", "zh-CN": "为浏览器建造的空间。" }, "order": 4, "active": true }
+]
+

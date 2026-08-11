@@ -1,0 +1,31 @@
+---
+/** Shared document shell sets bilingual metadata and permanent accessibility landmarks. */
+import "../styles.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import type { Locale } from "@462019/contracts";
+
+interface Props { locale: Locale; title: string; description: string; }
+const { locale, title, description } = Astro.props;
+const language = locale === "zh-CN" ? "zh-CN" : "en";
+---
+<!doctype html>
+<html lang={language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b0907" />
+    <link rel="preload" as="image" href="/images/nailong-960.avif" type="image/avif" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">{locale === "en" ? "Skip to content" : "跳到正文"}</a>
+    <Header locale={locale} />
+    <div class="grain" aria-hidden="true"></div>
+    <main id="main"><slot /></main>
+    <Footer locale={locale} />
+  </body>
+</html>
+
+<style>.skip{position:fixed;left:1rem;top:-5rem;z-index:40;background:var(--paper);color:var(--ink);padding:.5rem .8rem}.skip:focus{top:1rem}</style>

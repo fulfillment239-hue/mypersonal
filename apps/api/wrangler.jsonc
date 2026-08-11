@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "462019-content-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-04-10",
+  "workers_dev": true,
+  "d1_databases": [
+    { "binding": "DB", "database_name": "462019-portfolio", "database_id": "REPLACE_WITH_D1_DATABASE_ID", "migrations_dir": "migrations" }
+  ],
+  "r2_buckets": [
+    { "binding": "CONTENT", "bucket_name": "462019-portfolio-content" }
+  ],
+  "vars": {
+    "APP_ORIGIN": "http://localhost:4321",
+    "ENVIRONMENT": "development"
+  }
+}
+

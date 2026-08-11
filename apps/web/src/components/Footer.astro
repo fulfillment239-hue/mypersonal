@@ -1,0 +1,12 @@
+---
+/** Minimal footer intentionally avoids fake contact information until it is configured. */
+import type { Locale } from "@462019/contracts";
+const { locale } = Astro.props as { locale: Locale };
+---
+<footer class="footer">
+  <div class="shell footer__row">
+    <span>© 2026 462019</span>
+    <a href={locale === "en" ? "/privacy" : "/zh-cn/privacy"}>{locale === "en" ? "Privacy" : "隐私"}</a>
+  </div>
+</footer>
+

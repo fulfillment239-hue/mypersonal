@@ -1,0 +1,65 @@
+---
+/** Home composition turns R2-compatible seeded content into the public exhibition flow. */
+import type { Category, Locale, Project, SiteContent } from "@462019/contracts";
+import { copy, localePath, projectPath } from "../lib";
+import HeroStage from "./HeroStage";
+
+interface Props { locale: Locale; site: SiteContent; categories: Category[]; projects: Project[]; }
+const { locale, site, categories, projects } = Astro.props;
+const words = locale === "en"
+  ? { courses: "Four courses", coursesBody: "Choose a seat, then enter a body of work.", works: "Selected from the table", worksBody: "Starter records are marked as samples and can be replaced in the administration area.", scroll: "Scroll to take a seat", statement: "Statement", contact: "Contact" }
+  : { courses: "四道菜", coursesBody: "选择一个席位，再进入对应的作品。", works: "桌上的精选作品", worksBody: "起始记录已标记为示例，可在管理后台中替换。", scroll: "向下入席", statement: "创作陈述", contact: "联系" };
+---
+<HeroStage client:load kicker={copy(locale, site.heroKicker)} title={copy(locale, site.heroTitle)} description={copy(locale, site.heroDescription)} scrollLabel={words.scroll} />
+
+<section id="courses" class="section">
+  <div class="shell">
+    <div class="section__heading">
+      <div class="eyebrow">01 / {words.courses}</div>
+      <h2>{words.courses}</h2>
+      <p>{words.coursesBody}</p>
+    </div>
+    <div class="course-grid">
+      {categories.filter((category) => category.active).map((category) => <a class="course" href={localePath(locale, `works/${category.slug}`)}>
+        <span class="course__number">{String(category.order).padStart(2, "0")}</span>
+        <div><h3>{copy(locale, category.label)}</h3><p>{copy(locale, category.description)}</p></div>
+      </a>)}
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper">
+  <div class="shell">
+    <div class="section__heading">
+      <div class="eyebrow">02 / {words.works}</div>
+      <h2>{words.works}</h2>
+      <p>{words.worksBody}</p>
+    </div>
+    <div class="project-grid">
+      {projects.filter((project) => project.featured && project.status === "published").map((project) => <a class="project" href={projectPath(locale, project)} style={`--accent:${project.accent}`}>
+        <div class="project__wash" aria-hidden="true"></div>
+        <div>
+          <div class="project__meta"><span>{project.year}</span><span>{project.isDemo ? "Sample" : "Archive"}</span></div>
+          <h3>{copy(locale, project.title)}</h3>
+          <p>{copy(locale, project.summary)}</p>
+          {project.isDemo && <span class="demo">{locale === "en" ? "Sample record" : "示例记录"}</span>}
+        </div>
+      </a>)}
+    </div>
+  </div>
+</section>
+
+<section id="statement" class="section">
+  <div class="shell about">
+    <div><div class="eyebrow">03 / {words.statement}</div><h2>{copy(locale, site.aboutTitle)}</h2></div>
+    <p class="about__copy">{copy(locale, site.aboutBody)}</p>
+  </div>
+</section>
+
+<section class="section section--paper">
+  <div class="shell about">
+    <div><div class="eyebrow">04 / {words.contact}</div><h2>{copy(locale, site.contactTitle)}</h2></div>
+    <div class="about__copy"><p>{copy(locale, site.contactBody)}</p>{site.contactEmail && <a class="pill" href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>}</div>
+  </div>
+</section>
+

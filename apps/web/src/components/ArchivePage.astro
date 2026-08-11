@@ -1,0 +1,21 @@
+---
+/** Project archive uses category URLs instead of client-only filtering for shareable links. */
+import type { Category, Locale, Project } from "@462019/contracts";
+import { copy, localePath, projectPath } from "../lib";
+interface Props { locale: Locale; categories: Category[]; projects: Project[]; activeSlug?: string; }
+const { locale, categories, projects, activeSlug } = Astro.props;
+const active = categories.find((category) => category.slug === activeSlug);
+const visible = projects.filter((project) => project.status === "published" && (!active || project.categoryId === active.id));
+const labels = locale === "en" ? { eyebrow: "The archive", all: "All work", sample: "Sample", description: "A growing record of visual and digital experiments." } : { eyebrow: "作品档案", all: "全部作品", sample: "示例", description: "持续生长的视觉与数字实验记录。" };
+---
+<section class="archive"><div class="shell">
+  <div class="archive__head"><div class="eyebrow">{labels.eyebrow}</div><h1>{active ? copy(locale, active.label) : labels.all}</h1><p>{active ? copy(locale, active.description) : labels.description}</p></div>
+  <nav class="filters" aria-label={locale === "en" ? "Work filters" : "作品筛选"}>
+    <a class="pill" aria-current={!active ? "page" : undefined} href={localePath(locale, "works")}>{labels.all}</a>
+    {categories.filter((category) => category.active).map((category) => <a class="pill" aria-current={active?.id === category.id ? "page" : undefined} href={localePath(locale, `works/${category.slug}`)}>{copy(locale, category.label)}</a>)}
+  </nav>
+  <div class="project-grid">
+    {visible.map((project) => <a class="project" href={projectPath(locale, project)} style={`--accent:${project.accent}`}><div class="project__wash" aria-hidden="true"></div><div><div class="project__meta"><span>{project.year}</span><span>{project.isDemo ? labels.sample : "Archive"}</span></div><h3>{copy(locale, project.title)}</h3><p>{copy(locale, project.summary)}</p></div></a>)}
+  </div>
+</div></section>
+

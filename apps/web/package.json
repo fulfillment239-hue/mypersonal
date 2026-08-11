@@ -1,0 +1,29 @@
+{
+  "name": "@462019/web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "typecheck": "astro check",
+    "test": "vitest run",
+    "lint": "astro check"
+  },
+  "dependencies": {
+    "@462019/content": "workspace:*",
+    "@462019/contracts": "workspace:*",
+    "@astrojs/react": "^4.2.2",
+    "astro": "^5.6.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250410.0",
+    "@astrojs/check": "^0.9.4",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "typescript": "^5.8.2",
+    "vitest": "^3.1.1"
+  }
+}

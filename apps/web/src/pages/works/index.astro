@@ -1,0 +1,8 @@
+---
+/** English all-project archive. */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArchivePage from "../../components/ArchivePage.astro";
+import { seededCategories, seededProjects } from "@462019/content";
+---
+<BaseLayout locale="en" title="Works — 462019" description="The 462019 project archive."><ArchivePage locale="en" categories={seededCategories} projects={seededProjects} /></BaseLayout>
+

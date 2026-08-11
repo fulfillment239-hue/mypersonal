@@ -45,7 +45,12 @@ export default function AuthDialog({ label, locale }: Props) {
     const body = { username: form.get("username"), password: form.get("password"), email: form.get("email") || undefined, turnstileToken };
     const endpoint = mode === "login" ? "/api/v1/auth/login" : "/api/v1/auth/register";
     const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), credentials: "include" });
-    if (!response.ok) return setError(locale === "en" ? "We could not complete that request." : "无法完成该请求。" );
+    if (!response.ok) {
+      const invalidLogin = mode === "login" && response.status === 401;
+      return setError(locale === "en"
+        ? (invalidLogin ? "Invalid username or password." : "The authentication service is temporarily unavailable.")
+        : (invalidLogin ? "用户名或密码错误。" : "认证服务暂时不可用。"));
+    }
     const result = await response.json() as { csrfToken: string };
     sessionStorage.setItem("portfolio_csrf", result.csrfToken);
     location.assign("/account");

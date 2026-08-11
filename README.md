@@ -47,3 +47,4 @@ Deploy the API Worker once before enabling the web build. The root `pnpm deploy`
 
 The local administrator file is ignored by Git. Never commit passwords or Worker secrets.
 The synchronizer accepts `AUTH_PEPPER` from the process environment and clears `ADMIN_PASSWORD` from the local file only after D1 reports success.
+Password hashes use the Cloudflare Workers-supported PBKDF2-HMAC-SHA-256 ceiling of 100,000 iterations, a random 16-byte salt, a 32-byte output and the private Worker Pepper.

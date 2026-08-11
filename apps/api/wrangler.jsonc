@@ -5,6 +5,7 @@
   "compatibility_date": "2025-04-10",
   "workers_dev": false,
   "preview_urls": false,
+  "observability": { "logs": { "enabled": true, "invocation_logs": true } },
   "d1_databases": [
     { "binding": "DB", "database_name": "462019-portfolio", "database_id": "85462e43-e9d1-4e0e-977e-301f7a0edf55", "migrations_dir": "migrations" }
   ],

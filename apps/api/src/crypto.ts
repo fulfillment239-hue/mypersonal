@@ -1,6 +1,7 @@
 /** Web Crypto helpers keep passwords and session tokens out of D1 in plaintext. */
 const encoder = new TextEncoder();
-const HASH_ITERATIONS = 600_000;
+// Cloudflare Workers rejects a single PBKDF2 operation above 100,000 iterations.
+const HASH_ITERATIONS = 100_000;
 
 export function base64Url(bytes: Uint8Array): string {
   let text = "";
@@ -31,14 +32,15 @@ export async function hashPassword(password: string, pepper: string): Promise<st
 
 export async function verifyPassword(password: string, pepper: string, stored: string): Promise<boolean> {
   const [algorithm, iterations, saltText, expectedText] = stored.split("$");
-  if (algorithm !== "pbkdf2-sha256" || Number(iterations) !== HASH_ITERATIONS || !saltText || !expectedText) return false;
-  const actual = await derivePassword(password, pepper, fromBase64Url(saltText));
+  const iterationCount = Number(iterations);
+  if (algorithm !== "pbkdf2-sha256" || iterationCount !== HASH_ITERATIONS || !saltText || !expectedText) return false;
+  const actual = await derivePassword(password, pepper, fromBase64Url(saltText), iterationCount);
   return constantTimeEqual(actual, fromBase64Url(expectedText));
 }
 
-async function derivePassword(password: string, pepper: string, salt: Uint8Array): Promise<Uint8Array> {
+async function derivePassword(password: string, pepper: string, salt: Uint8Array, iterations = HASH_ITERATIONS): Promise<Uint8Array> {
   const material = await crypto.subtle.importKey("raw", encoder.encode(`${password}${pepper}`), "PBKDF2", false, ["deriveBits"]);
-  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: HASH_ITERATIONS }, material, 256);
+  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations }, material, 256);
   return new Uint8Array(bits);
 }
 
@@ -46,4 +48,3 @@ function constantTimeEqual(left: Uint8Array, right: Uint8Array): boolean {
   if (left.length !== right.length) return false;
   return left.reduce((difference, byte, index) => difference | (byte ^ right[index]), 0) === 0;
 }
-

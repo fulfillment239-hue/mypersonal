@@ -7,6 +7,6 @@ describe("password crypto", () => {
     const stored = await hashPassword("a password that is long enough", "test-pepper");
     await expect(verifyPassword("a password that is long enough", "test-pepper", stored)).resolves.toBe(true);
     await expect(verifyPassword("different password", "test-pepper", stored)).resolves.toBe(false);
+    await expect(verifyPassword("a password that is long enough", "test-pepper", stored.replace("$100000$", "$600000$"))).resolves.toBe(false);
   }, 20_000);
 });
-

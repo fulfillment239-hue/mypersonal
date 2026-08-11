@@ -16,10 +16,11 @@
 - [x] Added Turnstile registration verification, production secrets and hardened response headers.
 - [x] Bound `462019.xyz` and `www.462019.xyz`, including the canonical HTTPS redirect.
 - [x] Configured Cloudflare Access for both administrator routes and synchronized the first D1 administrator.
+- [x] Enabled retained Worker invocation logs and adapted PBKDF2 to Cloudflare's 100,000-iteration platform limit.
 
 ## In progress
 
-- [ ] Complete the first interactive Access OTP and administrator-password smoke test.
+- [ ] Re-synchronize the administrator hash and complete the first interactive administrator-password smoke test.
 
 ## Deployment checklist
 

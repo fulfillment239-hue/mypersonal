@@ -24,6 +24,8 @@
 - [ ] Complete the first interactive administrator-password smoke test.
 - [x] Refreshed the public portfolio with a lightweight editorial layout inspired by Lusion's visual language, while retaining the original Nailong artwork and independent branding.
 - [x] Limited motion to one pointer-responsive hero treatment and one viewport reveal treatment, with reduced-motion cleanup.
+- [x] Replaced empty project color fields with reusable lightweight previews informed by Figma's Simple Design System image panels, tags and content cards.
+- [x] Added a compact practice summary and clearer project affordances without introducing new media or animation dependencies.
 
 ## Deployment checklist
 

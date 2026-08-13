@@ -3,14 +3,25 @@
 import type { Category, Locale, Project, SiteContent } from "@462019/contracts";
 import { copy, localePath, projectPath } from "../lib";
 import HeroStage from "./HeroStage";
+import ProjectPreview from "./ProjectPreview.astro";
 
 interface Props { locale: Locale; site: SiteContent; categories: Category[]; projects: Project[]; }
 const { locale, site, categories, projects } = Astro.props;
+const categoryById = new Map(categories.map((category) => [category.id, category]));
 const words = locale === "en"
-  ? { courses: "Four courses", coursesBody: "Choose a seat, then enter a body of work.", works: "Selected from the table", worksBody: "Starter records are marked as samples and can be replaced in the administration area.", scroll: "Scroll to take a seat", statement: "Statement", contact: "Contact" }
-  : { courses: "四道菜", coursesBody: "选择一个席位，再进入对应的作品。", works: "桌上的精选作品", worksBody: "起始记录已标记为示例，可在管理后台中替换。", scroll: "向下入席", statement: "创作陈述", contact: "联系" };
+  ? { courses: "Four practices", coursesBody: "A compact practice spanning image, interface and code.", works: "Selected work", worksBody: "Four starter case studies ready to be replaced with finished projects.", scroll: "Scroll to explore", statement: "Statement", contact: "Contact", practice: "Practice", projects: "Selected projects", bilingual: "Languages", view: "View case study" }
+  : { courses: "四个方向", coursesBody: "一套横跨图像、界面与代码的轻量创作实践。", works: "精选作品", worksBody: "四个可随时替换为正式项目的案例入口。", scroll: "向下探索", statement: "创作陈述", contact: "联系", practice: "创作方向", projects: "精选项目", bilingual: "语言", view: "查看案例" };
 ---
 <HeroStage client:load kicker={copy(locale, site.heroKicker)} title={copy(locale, site.heroTitle)} description={copy(locale, site.heroDescription)} scrollLabel={words.scroll} />
+
+<section class="practice-strip" aria-label={locale === "en" ? "Portfolio summary" : "作品集概览"} data-reveal>
+  <div class="shell practice-strip__grid">
+    <div><span>04</span><small>{words.practice}</small></div>
+    <div><span>{String(projects.filter((project) => project.featured).length).padStart(2, "0")}</span><small>{words.projects}</small></div>
+    <div><span>EN / 中</span><small>{words.bilingual}</small></div>
+    <p>{locale === "en" ? "Independent designer & developer shaping visual ideas into useful digital products." : "独立设计与开发，把视觉想法塑造成可用的数字产品。"}</p>
+  </div>
+</section>
 
 <section id="courses" class="section section--courses" data-reveal>
   <div class="shell">
@@ -36,12 +47,14 @@ const words = locale === "en"
       <p>{words.worksBody}</p>
     </div>
     <div class="project-grid">
-      {projects.filter((project) => project.featured && project.status === "published").map((project) => <a class="project" href={projectPath(locale, project)} style={`--accent:${project.accent}`}>
-        <div class="project__wash" aria-hidden="true"></div>
+      {projects.filter((project) => project.featured && project.status === "published").map((project, index) => <a class="project" href={projectPath(locale, project)} style={`--accent:${project.accent}`}>
+        <ProjectPreview locale={locale} project={project} index={index} categoryName={copy(locale, categoryById.get(project.categoryId)?.label ?? { en: "Work", "zh-CN": "作品" })} />
         <div>
           <div class="project__meta"><span>{project.year}</span><span>{project.isDemo ? "Sample" : "Archive"}</span></div>
           <h3>{copy(locale, project.title)}</h3>
           <p>{copy(locale, project.summary)}</p>
+          <div class="project__tags">{project.roles.slice(0, 2).map((role) => <span>{role}</span>)}</div>
+          <span class="project__link">{words.view} <b aria-hidden="true">↗</b></span>
           {project.isDemo && <span class="demo">{locale === "en" ? "Sample record" : "示例记录"}</span>}
         </div>
       </a>)}

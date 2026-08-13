@@ -1,0 +1,16 @@
+---
+/** Shared project artwork turns JSON records into lightweight, media-free portfolio previews. */
+import type { Locale, Project } from "@462019/contracts";
+import { copy } from "../lib";
+
+interface Props { locale: Locale; project: Project; index: number; categoryName: string; }
+const { locale, project, index, categoryName } = Astro.props;
+---
+<div class={`project__preview project__preview--${index % 4}`} aria-hidden="true">
+  <div class="preview__bar"><span></span><span></span><span></span><b>{String(index + 1).padStart(2, "0")}</b></div>
+  <div class="preview__canvas">
+    <span class="preview__kicker">{categoryName}</span>
+    <strong>{copy(locale, project.title)}</strong>
+    <div class="preview__object"><i></i><i></i><i></i></div>
+  </div>
+</div>

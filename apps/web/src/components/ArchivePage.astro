@@ -2,6 +2,7 @@
 /** Project archive uses category URLs instead of client-only filtering for shareable links. */
 import type { Category, Locale, Project } from "@462019/contracts";
 import { copy, localePath, projectPath } from "../lib";
+import ProjectPreview from "./ProjectPreview.astro";
 interface Props { locale: Locale; categories: Category[]; projects: Project[]; activeSlug?: string; }
 const { locale, categories, projects, activeSlug } = Astro.props;
 const active = categories.find((category) => category.slug === activeSlug);
@@ -15,7 +16,6 @@ const labels = locale === "en" ? { eyebrow: "The archive", all: "All work", samp
     {categories.filter((category) => category.active).map((category) => <a class="pill" aria-current={active?.id === category.id ? "page" : undefined} href={localePath(locale, `works/${category.slug}`)}>{copy(locale, category.label)}</a>)}
   </nav>
   <div class="project-grid">
-    {visible.map((project) => <a class="project" href={projectPath(locale, project)} style={`--accent:${project.accent}`}><div class="project__wash" aria-hidden="true"></div><div><div class="project__meta"><span>{project.year}</span><span>{project.isDemo ? labels.sample : "Archive"}</span></div><h3>{copy(locale, project.title)}</h3><p>{copy(locale, project.summary)}</p></div></a>)}
+    {visible.map((project, index) => <a class="project" href={projectPath(locale, project)} style={`--accent:${project.accent}`}><ProjectPreview locale={locale} project={project} index={index} categoryName={copy(locale, categories.find((category) => category.id === project.categoryId)?.label ?? { en: "Work", "zh-CN": "作品" })} /><div><div class="project__meta"><span>{project.year}</span><span>{project.isDemo ? labels.sample : "Archive"}</span></div><h3>{copy(locale, project.title)}</h3><p>{copy(locale, project.summary)}</p><div class="project__tags">{project.roles.slice(0, 2).map((role) => <span>{role}</span>)}</div></div></a>)}
   </div>
 </div></section>
-

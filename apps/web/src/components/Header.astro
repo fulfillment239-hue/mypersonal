@@ -10,7 +10,7 @@ const targetLocale = locale === "en" ? "zh-CN" : "en";
 ---
 <header class="header">
   <div class="shell header__row">
-    <a class="brand" href={localePath(locale)} aria-label="462019 home">462019</a>
+    <a class="brand" href={localePath(locale)} aria-label="462019 home"><span>462019</span><small>ARCHIVE</small></a>
     <nav class="nav" aria-label={locale === "en" ? "Primary navigation" : "主导航"}>
       <a href={localePath(locale, "works")}>{labels.works}</a>
       <a href={localePath(locale, "#statement")}>{labels.about}</a>

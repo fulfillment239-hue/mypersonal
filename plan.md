@@ -20,7 +20,10 @@
 
 ## In progress
 
-- [ ] Re-synchronize the administrator hash and complete the first interactive administrator-password smoke test.
+- [x] Re-synchronize the administrator hash with Cloudflare-compatible parameters.
+- [ ] Complete the first interactive administrator-password smoke test.
+- [x] Refreshed the public portfolio with a lightweight editorial layout inspired by Lusion's visual language, while retaining the original Nailong artwork and independent branding.
+- [x] Limited motion to one pointer-responsive hero treatment and one viewport reveal treatment, with reduced-motion cleanup.
 
 ## Deployment checklist
 

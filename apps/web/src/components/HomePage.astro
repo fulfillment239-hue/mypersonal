@@ -12,7 +12,7 @@ const words = locale === "en"
 ---
 <HeroStage client:load kicker={copy(locale, site.heroKicker)} title={copy(locale, site.heroTitle)} description={copy(locale, site.heroDescription)} scrollLabel={words.scroll} />
 
-<section id="courses" class="section">
+<section id="courses" class="section section--courses" data-reveal>
   <div class="shell">
     <div class="section__heading">
       <div class="eyebrow">01 / {words.courses}</div>
@@ -28,7 +28,7 @@ const words = locale === "en"
   </div>
 </section>
 
-<section class="section section--paper">
+<section class="section section--paper" data-reveal>
   <div class="shell">
     <div class="section__heading">
       <div class="eyebrow">02 / {words.works}</div>
@@ -49,17 +49,16 @@ const words = locale === "en"
   </div>
 </section>
 
-<section id="statement" class="section">
+<section id="statement" class="section" data-reveal>
   <div class="shell about">
     <div><div class="eyebrow">03 / {words.statement}</div><h2>{copy(locale, site.aboutTitle)}</h2></div>
     <p class="about__copy">{copy(locale, site.aboutBody)}</p>
   </div>
 </section>
 
-<section class="section section--paper">
+<section class="section section--paper" data-reveal>
   <div class="shell about">
     <div><div class="eyebrow">04 / {words.contact}</div><h2>{copy(locale, site.contactTitle)}</h2></div>
     <div class="about__copy"><p>{copy(locale, site.contactBody)}</p>{site.contactEmail && <a class="pill" href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>}</div>
   </div>
 </section>
-

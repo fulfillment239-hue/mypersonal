@@ -9,8 +9,8 @@ interface Props { locale: Locale; site: SiteContent; categories: Category[]; pro
 const { locale, site, categories, projects } = Astro.props;
 const categoryById = new Map(categories.map((category) => [category.id, category]));
 const words = locale === "en"
-  ? { works: "Selected work", worksBody: "Four starter case studies ready to be replaced with finished projects.", scroll: "Scroll to explore", statement: "Statement", contact: "Contact", view: "View case study" }
-  : { works: "精选作品", worksBody: "四个可随时替换为正式项目的案例入口。", scroll: "向下探索", statement: "创作陈述", contact: "联系", view: "查看案例" };
+  ? { works: "Selected work", worksBody: "Interface studies shaped through art direction, careful editing and functional restraint.", caseStudy: "Case study", scroll: "Scroll to explore", statement: "Statement", contact: "Contact", view: "View case study" }
+  : { works: "精选作品", worksBody: "以艺术指导、审慎取舍与功能克制塑造的界面设计研究。", caseStudy: "作品案例", scroll: "向下探索", statement: "创作陈述", contact: "联系", view: "查看案例" };
 ---
 <HeroStage client:load kicker={copy(locale, site.heroKicker)} title={copy(locale, site.heroTitle)} description={copy(locale, site.heroDescription)} scrollLabel={words.scroll} />
 
@@ -25,7 +25,7 @@ const words = locale === "en"
       {projects.filter((project) => project.featured && project.status === "published").map((project, index) => <a class="project" href={projectPath(locale, project)} style={`--accent:${project.accent}`}>
         <ProjectPreview locale={locale} project={project} index={index} categoryName={copy(locale, categoryById.get(project.categoryId)?.label ?? { en: "Work", "zh-CN": "作品" })} />
         <div>
-          <div class="project__meta"><span>{project.year}</span><span>{project.isDemo ? "Sample" : "Archive"}</span></div>
+          <div class="project__meta"><span>{project.year}</span><span>{project.isDemo ? "Sample" : words.caseStudy}</span></div>
           <h3>{copy(locale, project.title)}</h3>
           <p>{copy(locale, project.summary)}</p>
           <div class="project__tags">{project.roles.slice(0, 2).map((role) => <span>{role}</span>)}</div>

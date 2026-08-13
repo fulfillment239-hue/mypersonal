@@ -15,6 +15,7 @@
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
+    "assets:portfolio": "node scripts/optimize-portfolio-assets.mjs",
     "admin:sync": "pnpm --filter @462019/api admin:sync"
   },
   "devDependencies": {

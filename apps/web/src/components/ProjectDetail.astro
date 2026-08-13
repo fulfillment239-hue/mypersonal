@@ -9,6 +9,6 @@ const labels = locale === "en" ? { role: "Role", tools: "Tools", back: "Back to 
 ---
 <article class="detail"><div class="shell">
   <div class="detail__intro"><a class="eyebrow" href={locale === "en" ? "/works" : "/zh-cn/works"}>← {labels.back}</a><p class="eyebrow" style={`color:${project.accent}`}>{categoryName} / {project.year}</p><h1>{copy(locale, project.title)}</h1><p>{copy(locale, project.summary)}</p>{project.isDemo && <span class="demo">{locale === "en" ? "Sample project — replace in administration" : "示例项目——可在管理后台中替换"}</span>}</div>
+  {project.cover && <picture class="detail__cover"><source type="image/avif" srcset={`${project.cover.basePath}-960.avif 960w, ${project.cover.basePath}-1440.avif 1440w`} sizes="min(1180px, calc(100vw - 3rem))" /><source type="image/webp" srcset={`${project.cover.basePath}-960.webp 960w, ${project.cover.basePath}-1440.webp 1440w`} sizes="min(1180px, calc(100vw - 3rem))" /><img src={`${project.cover.basePath}-1440.webp`} alt={copy(locale, project.cover.alt)} width={project.cover.width} height={project.cover.height} decoding="async" /></picture>}
   <div class="detail__body"><aside><p><strong>{labels.role}</strong><br />{project.roles.join(" · ")}</p><p><strong>{labels.tools}</strong><br />{project.technologies.join(" · ")}</p></aside><div class="markdown">{body.map((paragraph) => <p>{paragraph}</p>)}</div></div>
 </div></article>
-

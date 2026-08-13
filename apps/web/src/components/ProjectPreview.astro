@@ -1,16 +1,19 @@
 ---
-/** Shared project artwork turns JSON records into lightweight, media-free portfolio previews. */
+/** Shared artwork prefers responsive case-study covers and falls back to a lightweight generated preview. */
 import type { Locale, Project } from "@462019/contracts";
 import { copy } from "../lib";
 
 interface Props { locale: Locale; project: Project; index: number; categoryName: string; }
 const { locale, project, index, categoryName } = Astro.props;
 ---
-<div class={`project__preview project__preview--${index % 4}`} aria-hidden="true">
+{project.cover ? <figure class:list={["project__cover", { "project__cover--portrait": project.cover.height > project.cover.width }] }>
+  <picture>
+    <source type="image/avif" srcset={`${project.cover.basePath}-640.avif 640w, ${project.cover.basePath}-960.avif 960w, ${project.cover.basePath}-1440.avif 1440w`} sizes="(max-width: 760px) calc(100vw - 4rem), 42vw" />
+    <source type="image/webp" srcset={`${project.cover.basePath}-640.webp 640w, ${project.cover.basePath}-960.webp 960w, ${project.cover.basePath}-1440.webp 1440w`} sizes="(max-width: 760px) calc(100vw - 4rem), 42vw" />
+    <img src={`${project.cover.basePath}-960.webp`} alt={copy(locale, project.cover.alt)} width={project.cover.width} height={project.cover.height} loading="lazy" decoding="async" />
+  </picture>
+  <figcaption>{String(index + 1).padStart(2, "0")} / {categoryName}</figcaption>
+</figure> : <div class={`project__preview project__preview--${index % 4}`} aria-hidden="true">
   <div class="preview__bar"><span></span><span></span><span></span><b>{String(index + 1).padStart(2, "0")}</b></div>
-  <div class="preview__canvas">
-    <span class="preview__kicker">{categoryName}</span>
-    <strong>{copy(locale, project.title)}</strong>
-    <div class="preview__object"><i></i><i></i><i></i></div>
-  </div>
-</div>
+  <div class="preview__canvas"><span class="preview__kicker">{categoryName}</span><strong>{copy(locale, project.title)}</strong><div class="preview__object"><i></i><i></i><i></i></div></div>
+</div>}

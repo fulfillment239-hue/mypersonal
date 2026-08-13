@@ -27,7 +27,9 @@
 - [x] Replaced empty project color fields with reusable lightweight previews informed by Figma's Simple Design System image panels, tags and content cards.
 - [x] Added a compact practice summary and clearer project affordances without introducing new media or animation dependencies.
 - [x] Removed the empty portfolio summary and category placeholder sections identified in the production screenshots.
-- [ ] Review and implement the user-provided Figma frame after editor access and a node-specific URL are available.
+- [x] Reviewed the user-provided Figma exports directly from the supplied SVG, CSS and screenshot references.
+- [x] Converted the user-owned Figma AI exports into two honest bilingual case studies with responsive AVIF/WebP covers.
+- [x] Replaced fictional sample records and generated placeholder art with asymmetric, content-led project presentation.
 
 ## Deployment checklist
 

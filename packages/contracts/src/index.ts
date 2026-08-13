@@ -13,6 +13,13 @@ export type LocalizedText = z.infer<typeof LocalizedTextSchema>;
 export const ProjectStatusSchema = z.enum(["draft", "published"]);
 export const RoleSchema = z.enum(["member", "admin"]);
 
+export const ProjectCoverSchema = z.object({
+  basePath: z.string().regex(/^\/images\/[a-z0-9/_-]+$/),
+  alt: LocalizedTextSchema,
+  width: z.number().int().positive(),
+  height: z.number().int().positive()
+});
+
 export const CategorySchema = z.object({
   id: z.string().uuid(),
   slug: z.string().regex(/^[a-z0-9-]+$/),
@@ -38,6 +45,7 @@ export const ProjectSchema = z.object({
   roles: z.array(z.string().min(1)).max(12),
   technologies: z.array(z.string().min(1)).max(16),
   accent: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+  cover: ProjectCoverSchema.optional(),
   links: z.array(z.object({ label: LocalizedTextSchema, href: z.string().url() })).max(4)
 });
 export type Project = z.infer<typeof ProjectSchema>;

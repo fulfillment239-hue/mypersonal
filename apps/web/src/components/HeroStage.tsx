@@ -45,7 +45,7 @@ export default function HeroStage({ kicker, title, description, scrollLabel }: P
       <div className="hero__statement">
         <h1 id="hero-title">{title}</h1>
         <p>{description}</p>
-        <a className="scroll-cue" href="#courses">{scrollLabel} ↓</a>
+        <a className="scroll-cue" href="#works">{scrollLabel} ↓</a>
       </div>
     </div>
     <div className="hero__visual">

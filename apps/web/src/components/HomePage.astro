@@ -1,7 +1,7 @@
 ---
 /** Home composition turns R2-compatible seeded content into the public exhibition flow. */
 import type { Category, Locale, Project, SiteContent } from "@462019/contracts";
-import { copy, localePath, projectPath } from "../lib";
+import { copy, projectPath } from "../lib";
 import HeroStage from "./HeroStage";
 import ProjectPreview from "./ProjectPreview.astro";
 
@@ -9,40 +9,15 @@ interface Props { locale: Locale; site: SiteContent; categories: Category[]; pro
 const { locale, site, categories, projects } = Astro.props;
 const categoryById = new Map(categories.map((category) => [category.id, category]));
 const words = locale === "en"
-  ? { courses: "Four practices", coursesBody: "A compact practice spanning image, interface and code.", works: "Selected work", worksBody: "Four starter case studies ready to be replaced with finished projects.", scroll: "Scroll to explore", statement: "Statement", contact: "Contact", practice: "Practice", projects: "Selected projects", bilingual: "Languages", view: "View case study" }
-  : { courses: "四个方向", coursesBody: "一套横跨图像、界面与代码的轻量创作实践。", works: "精选作品", worksBody: "四个可随时替换为正式项目的案例入口。", scroll: "向下探索", statement: "创作陈述", contact: "联系", practice: "创作方向", projects: "精选项目", bilingual: "语言", view: "查看案例" };
+  ? { works: "Selected work", worksBody: "Four starter case studies ready to be replaced with finished projects.", scroll: "Scroll to explore", statement: "Statement", contact: "Contact", view: "View case study" }
+  : { works: "精选作品", worksBody: "四个可随时替换为正式项目的案例入口。", scroll: "向下探索", statement: "创作陈述", contact: "联系", view: "查看案例" };
 ---
 <HeroStage client:load kicker={copy(locale, site.heroKicker)} title={copy(locale, site.heroTitle)} description={copy(locale, site.heroDescription)} scrollLabel={words.scroll} />
 
-<section class="practice-strip" aria-label={locale === "en" ? "Portfolio summary" : "作品集概览"} data-reveal>
-  <div class="shell practice-strip__grid">
-    <div><span>04</span><small>{words.practice}</small></div>
-    <div><span>{String(projects.filter((project) => project.featured).length).padStart(2, "0")}</span><small>{words.projects}</small></div>
-    <div><span>EN / 中</span><small>{words.bilingual}</small></div>
-    <p>{locale === "en" ? "Independent designer & developer shaping visual ideas into useful digital products." : "独立设计与开发，把视觉想法塑造成可用的数字产品。"}</p>
-  </div>
-</section>
-
-<section id="courses" class="section section--courses" data-reveal>
+<section id="works" class="section section--paper" data-reveal>
   <div class="shell">
     <div class="section__heading">
-      <div class="eyebrow">01 / {words.courses}</div>
-      <h2>{words.courses}</h2>
-      <p>{words.coursesBody}</p>
-    </div>
-    <div class="course-grid">
-      {categories.filter((category) => category.active).map((category) => <a class="course" href={localePath(locale, `works/${category.slug}`)}>
-        <span class="course__number">{String(category.order).padStart(2, "0")}</span>
-        <div><h3>{copy(locale, category.label)}</h3><p>{copy(locale, category.description)}</p></div>
-      </a>)}
-    </div>
-  </div>
-</section>
-
-<section class="section section--paper" data-reveal>
-  <div class="shell">
-    <div class="section__heading">
-      <div class="eyebrow">02 / {words.works}</div>
+      <div class="eyebrow">01 / {words.works}</div>
       <h2>{words.works}</h2>
       <p>{words.worksBody}</p>
     </div>
@@ -64,14 +39,14 @@ const words = locale === "en"
 
 <section id="statement" class="section" data-reveal>
   <div class="shell about">
-    <div><div class="eyebrow">03 / {words.statement}</div><h2>{copy(locale, site.aboutTitle)}</h2></div>
+    <div><div class="eyebrow">02 / {words.statement}</div><h2>{copy(locale, site.aboutTitle)}</h2></div>
     <p class="about__copy">{copy(locale, site.aboutBody)}</p>
   </div>
 </section>
 
 <section class="section section--paper" data-reveal>
   <div class="shell about">
-    <div><div class="eyebrow">04 / {words.contact}</div><h2>{copy(locale, site.contactTitle)}</h2></div>
+    <div><div class="eyebrow">03 / {words.contact}</div><h2>{copy(locale, site.contactTitle)}</h2></div>
     <div class="about__copy"><p>{copy(locale, site.contactBody)}</p>{site.contactEmail && <a class="pill" href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>}</div>
   </div>
 </section>

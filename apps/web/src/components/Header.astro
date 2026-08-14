@@ -4,7 +4,7 @@ import type { Locale } from "@462019/contracts";
 import { localePath } from "../lib";
 import AuthDialog from "./AuthDialog";
 
-const { locale } = Astro.props as { locale: Locale };
+const { locale, localeHref } = Astro.props as { locale: Locale; localeHref: string };
 const labels = locale === "en" ? { works: "Works", about: "Statement", account: "Sign in" } : { works: "作品", about: "陈述", account: "登录" };
 const targetLocale = locale === "en" ? "zh-CN" : "en";
 ---
@@ -14,17 +14,19 @@ const targetLocale = locale === "en" ? "zh-CN" : "en";
     <nav class="nav" aria-label={locale === "en" ? "Primary navigation" : "主导航"}>
       <a href={localePath(locale, "works")}>{labels.works}</a>
       <a href={localePath(locale, "#statement")}>{labels.about}</a>
-      <a class="nav__locale" href={localePath(targetLocale)} lang={targetLocale}>{locale === "en" ? "简中" : "EN"}</a>
+      <a class="nav__locale" href={localeHref} lang={targetLocale} hreflang={targetLocale} data-locale-switch data-astro-history="replace" aria-label={locale === "en" ? "切换为简体中文" : "Switch to English"}>{locale === "en" ? "简中" : "EN"}</a>
       <AuthDialog client:load label={labels.account} locale={locale} />
     </nav>
   </div>
 </header>
 
 <script>
-  /* The fixed bar crosses linen bands where its dark text disappears, so it watches what is behind it. */
-  const header = document.querySelector<HTMLElement>(".header");
-  const bands = Array.from(document.querySelectorAll<HTMLElement>(".section--paper"));
-  if (header && bands.length) {
+  /* Client-side locale swaps replace the bands, so every page load refreshes the observed nodes. */
+  function watchHeaderBands(): () => void {
+    const header = document.querySelector<HTMLElement>(".header");
+    const bands = Array.from(document.querySelectorAll<HTMLElement>(".section--paper"));
+    if (!header) return () => undefined;
+
     const probe = () => {
       const y = header.getBoundingClientRect().height * 0.55;
       const onLinen = bands.some((band) => {
@@ -42,10 +44,28 @@ const targetLocale = locale === "en" ? "zh-CN" : "en";
     addEventListener("scroll", schedule, { passive: true });
     addEventListener("resize", schedule);
     probe();
+
+    return () => {
+      removeEventListener("scroll", schedule);
+      removeEventListener("resize", schedule);
+    };
   }
 
-  /* Nothing should keep animating in a tab nobody is looking at. */
-  const followVisibility = () => document.body.classList.toggle("paused", document.hidden);
-  document.addEventListener("visibilitychange", followVisibility);
-  followVisibility();
+  function watchVisibility(): () => void {
+    const follow = () => document.body.classList.toggle("paused", document.hidden);
+    document.addEventListener("visibilitychange", follow);
+    follow();
+    return () => document.removeEventListener("visibilitychange", follow);
+  }
+
+  let stop = () => undefined;
+  const start = () => {
+    stop();
+    const stopBands = watchHeaderBands();
+    const stopVisibility = watchVisibility();
+    stop = () => { stopBands(); stopVisibility(); };
+  };
+
+  document.addEventListener("astro:page-load", start);
+  start();
 </script>

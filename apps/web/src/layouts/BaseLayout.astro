@@ -3,7 +3,9 @@
 import "../styles.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import LocaleSwap from "../components/LocaleSwap.astro";
 import type { Locale } from "@462019/contracts";
+import { ClientRouter } from "astro:transitions";
 
 interface Props { locale: Locale; title: string; description: string; }
 const { locale, title, description } = Astro.props;
@@ -14,6 +16,7 @@ const here = Astro.url.pathname;
 const bare = here.replace(/^\/zh-cn/, "") || "/";
 const enHref = new URL(bare, origin).href;
 const zhHref = new URL(bare === "/" ? "/zh-cn/" : `/zh-cn${bare}`, origin).href;
+const localeHref = locale === "en" ? new URL(zhHref).pathname : new URL(enHref).pathname;
 const canonical = new URL(here, origin).href;
 const ogImage = new URL("/images/og-cover.jpg", origin).href;
 ---
@@ -46,13 +49,15 @@ const ogImage = new URL("/images/og-cover.jpg", origin).href;
     <meta property="og:locale:alternate" content={locale === "zh-CN" ? "en_US" : "zh_CN"} />
     <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
+    <ClientRouter fallback="swap" />
   </head>
-  <body>
+  <body transition:animate="none">
     <a class="skip" href="#main">{locale === "en" ? "Skip to content" : "跳到正文"}</a>
-    <Header locale={locale} />
+    <Header locale={locale} localeHref={localeHref} />
     <div class="grain" aria-hidden="true"></div>
     <main id="main"><slot /></main>
     <Footer locale={locale} />
+    <LocaleSwap />
   </body>
 </html>
 

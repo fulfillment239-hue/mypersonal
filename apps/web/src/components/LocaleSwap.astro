@@ -1,0 +1,45 @@
+---
+/** Keeps the visible sentence in place while the bilingual page is swapped client-side. */
+---
+
+<script>
+  interface SavedPosition { path: string; x: number; y: number; }
+  let savedPosition: SavedPosition | null = null;
+
+  function rememberPosition(event: MouseEvent): void {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+    const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>("a[data-locale-switch]") : null;
+    if (link) savedPosition = { path: new URL(link.href).pathname, x: scrollX, y: scrollY };
+  }
+
+  function afterIslandHydration(callback: () => void): void {
+    const islands = Array.from(document.querySelectorAll<HTMLElement>("astro-island[ssr]"));
+    if (!islands.length) return callback();
+    let pending = islands.length;
+    let finished = false;
+    const fallback = window.setTimeout(finish, 600);
+    function finish(): void {
+      if (finished) return;
+      finished = true;
+      clearTimeout(fallback);
+      callback();
+    }
+    const markHydrated = () => { if (--pending === 0) finish(); };
+    islands.forEach((island) => island.addEventListener("astro:hydrate", markHydrated, { once: true }));
+  }
+
+  function restorePosition(): void {
+    if (!savedPosition || savedPosition.path !== location.pathname) return;
+    const position = savedPosition;
+    savedPosition = null;
+    afterIslandHydration(() => requestAnimationFrame(() => {
+      const root = document.scrollingElement;
+      if (!root) return;
+      root.scrollLeft = position.x;
+      root.scrollTop = position.y;
+    }));
+  }
+
+  document.addEventListener("click", rememberPosition);
+  document.addEventListener("astro:page-load", restorePosition);
+</script>

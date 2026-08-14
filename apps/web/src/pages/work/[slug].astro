@@ -8,4 +8,4 @@ const project = seededProjects.find((item) => item.slug === Astro.params.slug);
 const category = seededCategories.find((item) => item.id === project?.categoryId);
 if (!project || !category) return Astro.redirect("/works");
 ---
-<BaseLayout locale="en" title={`${project.title.en} — 462019`} description={project.summary.en}><ProjectDetail locale="en" project={project} categoryName={category.label.en} /></BaseLayout>
+<BaseLayout locale="en" title={`${project.title.en} / 462019`} description={project.summary.en}><ProjectDetail locale="en" project={project} categoryName={category.label.en} /></BaseLayout>

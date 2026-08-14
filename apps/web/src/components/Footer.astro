@@ -5,7 +5,7 @@ const { locale } = Astro.props as { locale: Locale };
 ---
 <footer class="footer">
   <div class="shell footer__row">
-    <span>© 2026 462019 — {locale === "en" ? "Independent practice" : "独立创作"}</span>
+    <span>© 2026 462019 / {locale === "en" ? "Independent practice" : "独立创作"}</span>
     <div class="footer__links"><a href={locale === "en" ? "/privacy" : "/zh-cn/privacy"}>{locale === "en" ? "Privacy" : "隐私"}</a><a href="#main">↑ {locale === "en" ? "Top" : "顶部"}</a></div>
   </div>
 </footer>

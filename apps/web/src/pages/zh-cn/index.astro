@@ -4,6 +4,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import HomePage from "../../components/HomePage.astro";
 import { seededCategories, seededProjects, seededSite } from "@462019/content";
 ---
-<BaseLayout locale="zh-CN" title={`${seededSite.brand} — ${seededSite.heroTitle["zh-CN"]}`} description={seededSite.heroDescription["zh-CN"]}>
+<BaseLayout locale="zh-CN" title={`${seededSite.brand} / ${seededSite.heroTitle["zh-CN"]}`} description={seededSite.heroDescription["zh-CN"]}>
   <HomePage locale="zh-CN" site={seededSite} categories={seededCategories} projects={seededProjects} />
 </BaseLayout>

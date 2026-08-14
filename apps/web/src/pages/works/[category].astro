@@ -8,5 +8,5 @@ const slug = Astro.params.category;
 const category = seededCategories.find((item) => item.slug === slug);
 if (!category) return Astro.redirect("/works");
 ---
-<BaseLayout locale="en" title={`${category.label.en} — 462019`} description={category.description.en}><ArchivePage locale="en" categories={seededCategories} projects={seededProjects} activeSlug={slug} /></BaseLayout>
+<BaseLayout locale="en" title={`${category.label.en} / 462019`} description={category.description.en}><ArchivePage locale="en" categories={seededCategories} projects={seededProjects} activeSlug={slug} /></BaseLayout>
 

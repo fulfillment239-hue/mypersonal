@@ -8,6 +8,14 @@ import type { Locale } from "@462019/contracts";
 interface Props { locale: Locale; title: string; description: string; }
 const { locale, title, description } = Astro.props;
 const language = locale === "zh-CN" ? "zh-CN" : "en";
+
+const origin = Astro.site?.origin ?? "https://462019.xyz";
+const here = Astro.url.pathname;
+const bare = here.replace(/^\/zh-cn/, "") || "/";
+const enHref = new URL(bare, origin).href;
+const zhHref = new URL(bare === "/" ? "/zh-cn/" : `/zh-cn${bare}`, origin).href;
+const canonical = new URL(here, origin).href;
+const ogImage = new URL("/images/og-cover.jpg", origin).href;
 ---
 <!doctype html>
 <html lang={language}>
@@ -15,8 +23,28 @@ const language = locale === "zh-CN" ? "zh-CN" : "en";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#0b0907" />
-    <link rel="preload" as="image" href="/images/nailong-960.avif" type="image/avif" />
+    <meta name="theme-color" content="#130d08" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="zh-Hans" href={zhHref} />
+    <link rel="alternate" hreflang="x-default" href={enHref} />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-latin-600.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/instrument-sans-latin-400.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-mono-latin-500.woff2" crossorigin />
+    {bare === "/" && <link rel="preload" as="image" type="image/avif" imagesrcset="/images/nailong-640.avif 640w, /images/nailong-960.avif 960w, /images/nailong-1254.avif 1254w" imagesizes="(max-width: 760px) 125vw, 93vw" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="462019" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={locale === "en" ? "A laughing yellow figure at the head of a long candlelit table." : "一个大笑的黄色角色坐在烛光长桌的正中。"} />
+    <meta property="og:locale" content={locale === "zh-CN" ? "zh_CN" : "en_US"} />
+    <meta property="og:locale:alternate" content={locale === "zh-CN" ? "en_US" : "zh_CN"} />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
   </head>
   <body>

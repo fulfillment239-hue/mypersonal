@@ -2,11 +2,12 @@
   "brand": "462019",
   "heroTitle": { "en": "The Last Supper of Nailong", "zh-CN": "奶龙最后的晚餐" },
   "heroKicker": { "en": "A portfolio served in four courses", "zh-CN": "一席分为四道的作品集" },
-  "heroDescription": { "en": "Art, interfaces, apps and the web — collected around one long table.", "zh-CN": "艺术、界面、应用与网站，围绕同一张长桌展开。" },
+  "heroDescription": { "en": "Art, interfaces, apps and the web. Collected around one long table.", "zh-CN": "艺术、界面、应用与网站，围绕同一张长桌展开。" },
   "aboutTitle": { "en": "Made between image and system.", "zh-CN": "在图像与系统之间创作。" },
   "aboutBody": { "en": "462019 is an evolving personal archive for visual experiments and digital products. Every project begins with a point of view, then earns its place through craft.", "zh-CN": "462019 是持续生长的个人档案，记录视觉实验与数字产品。每个项目都从一个观点出发，再用细节获得它的位置。" },
   "contactTitle": { "en": "An empty chair is waiting.", "zh-CN": "还留着一把空椅子。" },
-  "contactBody": { "en": "Contact details will appear here when the archive opens for collaboration.", "zh-CN": "当档案准备好开启合作时，联系方式会出现在这里。" },
+  "contactBody": { "en": "One seat is still set. Write, and tell me what you want to make.", "zh-CN": "还有一副餐具摆着。写信来，说说你想做的东西。" },
+  "contactEmail": "fulfillment239@gmail.com",
   "socialLinks": []
 }
 

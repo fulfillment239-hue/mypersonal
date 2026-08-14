@@ -4,24 +4,25 @@ import type { Category, Locale, Project, SiteContent } from "@462019/contracts";
 import { copy, projectPath } from "../lib";
 import HeroStage from "./HeroStage";
 import ProjectPreview from "./ProjectPreview.astro";
+import CourseRule from "./CourseRule.astro";
 
 interface Props { locale: Locale; site: SiteContent; categories: Category[]; projects: Project[]; }
 const { locale, site, categories, projects } = Astro.props;
 const categoryById = new Map(categories.map((category) => [category.id, category]));
 const words = locale === "en"
-  ? { works: "Selected work", worksBody: "Interface studies shaped through art direction, careful editing and functional restraint.", caseStudy: "Case study", scroll: "Scroll to explore", statement: "Statement", contact: "Contact", view: "View case study" }
-  : { works: "精选作品", worksBody: "以艺术指导、审慎取舍与功能克制塑造的界面设计研究。", caseStudy: "作品案例", scroll: "向下探索", statement: "创作陈述", contact: "联系", view: "查看案例" };
+  ? { works: "Selected work", worksBody: "Interface studies shaped through art direction, careful editing and functional restraint.", caseStudy: "Case study", scroll: "Scroll to explore", statement: "Statement", contact: "Contact", view: "View case study", courses: ["Course I", "Course II", "Course III", "Course IV"], opening: "Opening", write: "Write to the table" }
+  : { works: "精选作品", worksBody: "以艺术指导、审慎取舍与功能克制塑造的界面设计研究。", caseStudy: "作品案例", scroll: "向下探索", statement: "创作陈述", contact: "联系", view: "查看案例", courses: ["第一道", "第二道", "第三道", "第四道"], opening: "开席", write: "写信到这张桌子" };
 ---
-<HeroStage client:load kicker={copy(locale, site.heroKicker)} title={copy(locale, site.heroTitle)} description={copy(locale, site.heroDescription)} scrollLabel={words.scroll} />
+<HeroStage client:load kicker={copy(locale, site.heroKicker)} title={copy(locale, site.heroTitle)} description={copy(locale, site.heroDescription)} scrollLabel={words.scroll} course={`${words.courses[0]} / ${words.opening}`} />
 
-<section id="works" class="section section--paper" data-reveal>
+<section id="works" class="section section--paper course" data-reveal>
   <div class="shell">
-    <div class="section__heading">
-      <div class="eyebrow">01 / {words.works}</div>
+    <CourseRule no={words.courses[1]} label={words.works} delay="-2.6s" />
+    <div class="section__heading" data-step>
       <h2>{words.works}</h2>
       <p>{words.worksBody}</p>
     </div>
-    <div class="project-grid">
+    <div class="project-grid" data-step>
       {projects.filter((project) => project.featured && project.status === "published").map((project, index) => <a class="project" href={projectPath(locale, project)} style={`--accent:${project.accent}`}>
         <ProjectPreview locale={locale} project={project} index={index} categoryName={copy(locale, categoryById.get(project.categoryId)?.label ?? { en: "Work", "zh-CN": "作品" })} />
         <div>
@@ -37,16 +38,33 @@ const words = locale === "en"
   </div>
 </section>
 
-<section id="statement" class="section" data-reveal>
-  <div class="shell about">
-    <div><div class="eyebrow">02 / {words.statement}</div><h2>{copy(locale, site.aboutTitle)}</h2></div>
-    <p class="about__copy">{copy(locale, site.aboutBody)}</p>
+<section id="statement" class="section course" data-reveal>
+  <div class="shell">
+    <CourseRule no={words.courses[2]} label={words.statement} delay="-6.1s" />
+    <div class="statement">
+      <h2 data-step>{copy(locale, site.aboutTitle)}</h2>
+      <p class="statement__copy" data-step>{copy(locale, site.aboutBody)}</p>
+    </div>
   </div>
 </section>
 
-<section class="section section--paper" data-reveal>
-  <div class="shell about">
-    <div><div class="eyebrow">03 / {words.contact}</div><h2>{copy(locale, site.contactTitle)}</h2></div>
-    <div class="about__copy"><p>{copy(locale, site.contactBody)}</p>{site.contactEmail && <a class="pill" href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>}</div>
+<section id="contact" class="section section--paper course" data-reveal>
+  <div class="shell">
+    <CourseRule no={words.courses[3]} label={words.contact} delay="-8.4s" />
+    <div class="seat">
+      <h2 class="seat__title" data-step>{copy(locale, site.contactTitle)}</h2>
+      <p class="seat__body" data-step>{copy(locale, site.contactBody)}</p>
+      {site.contactEmail && <a class="seat__chair" href={`mailto:${site.contactEmail}`} aria-label={`${words.write}: ${site.contactEmail}`} data-step>
+        <span class="seat__glow" aria-hidden="true"></span>
+        <svg class="seat__drawing" viewBox="0 0 240 200" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M86 116V40c0-7 5-12 12-12h44c7 0 12 5 12 12v76" />
+          <path d="M92 54h56M92 72h56M92 90h56" />
+          <path d="M74 116h92l-5 12H79z" />
+          <path d="M84 128v58M156 128v58" />
+          <path d="M88 164h64" />
+        </svg>
+        <span class="seat__mail">{site.contactEmail}</span>
+      </a>}
+    </div>
   </div>
 </section>

@@ -1,0 +1,15 @@
+---
+/** The long table: one hairline every course is served on, with a place setting laid at its head. */
+interface Props { no: string; label: string; delay?: string; }
+const { no, label, delay = "0s" } = Astro.props;
+---
+<div class="course__rule" data-step>
+  <span class="course__no">{no} / {label}</span>
+  <svg class="course__setting" viewBox="0 0 40 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round">
+    <circle cx="20" cy="20" r="8.6" />
+    <circle cx="20" cy="20" r="5.2" opacity=".45" />
+    <path d="M6 10v5.4M9.2 10v5.4M6 15.4h3.2M7.6 15.4V30" />
+    <path d="M32.6 10c1.9 1.7 1.9 5.1 0 6.8M32.6 16.8V30" />
+  </svg>
+  <span class="course__line" style={`animation-delay:${delay}`}></span>
+</div>

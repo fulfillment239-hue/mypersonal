@@ -19,3 +19,33 @@ const targetLocale = locale === "en" ? "zh-CN" : "en";
     </nav>
   </div>
 </header>
+
+<script>
+  /* The fixed bar crosses linen bands where its dark text disappears, so it watches what is behind it. */
+  const header = document.querySelector<HTMLElement>(".header");
+  const bands = Array.from(document.querySelectorAll<HTMLElement>(".section--paper"));
+  if (header && bands.length) {
+    const probe = () => {
+      const y = header.getBoundingClientRect().height * 0.55;
+      const onLinen = bands.some((band) => {
+        const box = band.getBoundingClientRect();
+        return box.top <= y && box.bottom >= y;
+      });
+      header.classList.toggle("header--paper", onLinen);
+    };
+    let queued = false;
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => { queued = false; probe(); });
+    };
+    addEventListener("scroll", schedule, { passive: true });
+    addEventListener("resize", schedule);
+    probe();
+  }
+
+  /* Nothing should keep animating in a tab nobody is looking at. */
+  const followVisibility = () => document.body.classList.toggle("paused", document.hidden);
+  document.addEventListener("visibilitychange", followVisibility);
+  followVisibility();
+</script>
